@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'post')]
 class Post extends AggregateRoot
 {
     #[ORM\Id]
