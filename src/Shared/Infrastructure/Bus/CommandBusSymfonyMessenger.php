@@ -6,43 +6,19 @@ namespace App\Shared\Infrastructure\Bus;
 
 use App\Shared\Domain\Bus\Command;
 use App\Shared\Domain\Bus\CommandBus;
-use ReflectionException;
-use Symfony\Component\Messenger\Exception\HandlerFailedException;
-use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
-use Symfony\Component\Messenger\Handler\HandlersLocator;
-use Symfony\Component\Messenger\MessageBus;
-use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CommandBusSymfonyMessenger implements CommandBus
 {
-    private MessageBus $bus;
+    private MessageBusInterface $commandBus;
 
-    /**
-     * @throws ReflectionException
-     */
-    public function __construct(
-        iterable $commandHandlers
-    ) {
-        $this->bus = new MessageBus([
-            new HandleMessageMiddleware(
-                new HandlersLocator(
-                    HandlerBuilder::fromCallables($commandHandlers),
-                ),
-            ),
-        ]);
+    public function __construct(MessageBusInterface $commandBus)
+    {
+        $this->commandBus = $commandBus;
     }
 
-    /**
-     * @throws Throwable
-     */
     public function dispatch(Command $command): void
     {
-        try {
-            $this->bus->dispatch($command);
-        } catch (NoHandlerForMessageException $e) {
-            throw new InvalidArgumentException(sprintf('The command has not a valid handler: %s', $command::class));
-        } catch (HandlerFailedException $e) {
-            throw $e->getPrevious();
-        }
+        $this->commandBus->dispatch($command);
     }
 }

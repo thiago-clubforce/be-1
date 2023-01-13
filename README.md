@@ -3,7 +3,7 @@
 ### With docker-compose, 
 ```
 docker-compose up -d
-docekr-compose exec backend bash
+docker-compose exec backend bash
 composer install
 php bin/console doctrine:migrations:migrate
 php bin/console cache:clear
