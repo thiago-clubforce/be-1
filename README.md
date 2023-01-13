@@ -5,6 +5,11 @@
 docker-compose up -d
 docker-compose exec backend bash
 composer install
+
+## FOR WSL2 USERS: 
+## before running next command
+## update DATABASE_URL .env variable host IP with IP of WSL instance (inet from ifconfig output) 
+
 php bin/console doctrine:migrations:migrate
 php bin/console cache:clear
 ```
