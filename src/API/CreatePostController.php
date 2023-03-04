@@ -29,7 +29,12 @@ class CreatePostController
             id: $payload['id'] ?? (string)Uuid::v4(),
             title: $payload['title'],
             summary: $payload['summary'],
+            description: $payload['description'],
         );
+        $first_word_title= substr($command->title, 0, 6);
+                if($first_word_title=='Qwerty'){
+                return new JsonResponse('title starts with Qwerty is not allowed', 400);
+               }
 
         try {
             $this->commandBus->dispatch(
@@ -43,6 +48,8 @@ class CreatePostController
                 Response::HTTP_BAD_REQUEST,
             );
         }
+
+
 
         return new JsonResponse(
             [
