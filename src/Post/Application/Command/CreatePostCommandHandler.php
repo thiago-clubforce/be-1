@@ -21,7 +21,9 @@ class CreatePostCommandHandler implements CommandHandler
             id: $command->id,
             title: $command->title,
             summary: $command->summary,
+            description: $command->description,
         );
+
         $this->repository->save($post);
     }
 }
